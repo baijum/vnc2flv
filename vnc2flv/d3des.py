@@ -19,18 +19,18 @@
 
 
 #  D3DES (V5.09) -
-#  
+#
 #  A portable, public domain, version of the Data Encryption Standard.
-#  
+#
 #  Written with Symantec's THINK (Lightspeed) C by Richard Outerbridge.
 #  Thanks to: Dan Hoey for his excellent Initial and Inverse permutation
 #  code;  Jim Gillogly & Phil Karn for the DES key schedule code; Dennis
 #  Ferguson, Eric Young and Dana How for comparing notes; and Ray Lau,
 #  for humouring me on.
-#  
+#
 #  Copyright (c) 1988,1989,1990,1991,1992 by Richard Outerbridge.
 #  (GEnie : OUTER; CIS : [71755,204]) Graven Imagery, 1992.
-#  
+#
 
 from struct import pack, unpack
 
@@ -49,12 +49,12 @@ bytebit = [ 01, 02, 04, 010, 020, 040, 0100, 0200 ] # VNC version
 
 # two password functions for VNC protocol.
 def decrypt_passwd(data):
-  dk = deskey(pack('8B', *vnckey), True)
-  return desfunc(data, dk)
+    dk = deskey(pack('8B', *vnckey), True)
+    return desfunc(data, dk)
 
 def generate_response(passwd, challange):
-  ek = deskey((passwd+'\x00'*8)[:8], False)
-  return desfunc(challange[:8], ek) + desfunc(challange[8:], ek)
+    ek = deskey((passwd+'\x00'*8)[:8], False)
+    return desfunc(challange[:8], ek) + desfunc(challange[8:], ek)
 
 ###
 ###  end: changes made for VNC.
@@ -63,21 +63,21 @@ def generate_response(passwd, challange):
 
 
 bigbyte = [
-  0x800000L,	0x400000L,	0x200000L,	0x100000L,
-  0x80000L,	0x40000L,	0x20000L,	0x10000L,
-  0x8000L,	0x4000L,	0x2000L,	0x1000L,
-  0x800L, 	0x400L, 	0x200L, 	0x100L,
-  0x80L,	0x40L,		0x20L,		0x10L,
-  0x8L,		0x4L,		0x2L,		0x1L
+  0x800000L,    0x400000L,      0x200000L,      0x100000L,
+  0x80000L,     0x40000L,       0x20000L,       0x10000L,
+  0x8000L,      0x4000L,        0x2000L,        0x1000L,
+  0x800L,       0x400L,         0x200L,         0x100L,
+  0x80L,        0x40L,          0x20L,          0x10L,
+  0x8L,         0x4L,           0x2L,           0x1L
   ]
 
 # Use the key schedule specified in the Standard (ANSI X3.92-1981).
 
 pc1 = [
-  56, 48, 40, 32, 24, 16,  8,	 0, 57, 49, 41, 33, 25, 17,
-   9,  1, 58, 50, 42, 34, 26,	18, 10,  2, 59, 51, 43, 35,
-  62, 54, 46, 38, 30, 22, 14,	 6, 61, 53, 45, 37, 29, 21,
-  13,  5, 60, 52, 44, 36, 28,	20, 12,  4, 27, 19, 11,  3
+  56, 48, 40, 32, 24, 16,  8,    0, 57, 49, 41, 33, 25, 17,
+   9,  1, 58, 50, 42, 34, 26,   18, 10,  2, 59, 51, 43, 35,
+  62, 54, 46, 38, 30, 22, 14,    6, 61, 53, 45, 37, 29, 21,
+  13,  5, 60, 52, 44, 36, 28,   20, 12,  4, 27, 19, 11,  3
   ]
 
 totrot = [ 1,2,4,6,8,10,12,14,15,17,19,21,23,25,27,28 ]
@@ -90,62 +90,62 @@ pc2 = [
   ]
 
 def deskey(key, decrypt):      # Thanks to James Gillogly & Phil Karn!
-  key = unpack('8B', key)
+    key = unpack('8B', key)
 
-  pc1m = [0]*56
-  pcr = [0]*56
-  kn = [0L]*32
-  
-  for j in range(56):
-    l = pc1[j]
-    m = l & 07
-    if key[l >> 3] & bytebit[m]:
-      pc1m[j] = 1
-    else:
-      pc1m[j] = 0
-  
-  for i in range(16):
-    if decrypt:
-      m = (15 - i) << 1
-    else:
-      m = i << 1
-    n = m + 1
-    kn[m] = kn[n] = 0L
-    for j in range(28):
-      l = j + totrot[i]
-      if l < 28:
-        pcr[j] = pc1m[l]
-      else:
-        pcr[j] = pc1m[l - 28]
-    for j in range(28, 56):
-      l = j + totrot[i]
-      if l < 56:
-        pcr[j] = pc1m[l]
-      else:
-        pcr[j] = pc1m[l - 28]
-    for j in range(24):
-      if pcr[pc2[j]]:
-        kn[m] |= bigbyte[j]
-      if pcr[pc2[j+24]]:
-        kn[n] |= bigbyte[j]
+    pc1m = [0]*56
+    pcr = [0]*56
+    kn = [0L]*32
 
-  return cookey(kn)
+    for j in range(56):
+        l = pc1[j]
+        m = l & 07
+        if key[l >> 3] & bytebit[m]:
+            pc1m[j] = 1
+        else:
+            pc1m[j] = 0
+
+    for i in range(16):
+        if decrypt:
+            m = (15 - i) << 1
+        else:
+            m = i << 1
+        n = m + 1
+        kn[m] = kn[n] = 0L
+        for j in range(28):
+            l = j + totrot[i]
+            if l < 28:
+                pcr[j] = pc1m[l]
+            else:
+                pcr[j] = pc1m[l - 28]
+        for j in range(28, 56):
+            l = j + totrot[i]
+            if l < 56:
+                pcr[j] = pc1m[l]
+            else:
+                pcr[j] = pc1m[l - 28]
+        for j in range(24):
+            if pcr[pc2[j]]:
+                kn[m] |= bigbyte[j]
+            if pcr[pc2[j+24]]:
+                kn[n] |= bigbyte[j]
+
+    return cookey(kn)
 
 def cookey(raw):
-  key = []
-  for i in range(0, 32, 2):
-    (raw0, raw1) = (raw[i], raw[i+1])
-    k  = (raw0 & 0x00fc0000L) << 6
-    k |= (raw0 & 0x00000fc0L) << 10
-    k |= (raw1 & 0x00fc0000L) >> 10
-    k |= (raw1 & 0x00000fc0L) >> 6
-    key.append(k)
-    k  = (raw0 & 0x0003f000L) << 12
-    k |= (raw0 & 0x0000003fL) << 16
-    k |= (raw1 & 0x0003f000L) >> 4
-    k |= (raw1 & 0x0000003fL)
-    key.append(k)
-  return key
+    key = []
+    for i in range(0, 32, 2):
+        (raw0, raw1) = (raw[i], raw[i+1])
+        k  = (raw0 & 0x00fc0000L) << 6
+        k |= (raw0 & 0x00000fc0L) << 10
+        k |= (raw1 & 0x00fc0000L) >> 10
+        k |= (raw1 & 0x00000fc0L) >> 6
+        key.append(k)
+        k  = (raw0 & 0x0003f000L) << 12
+        k |= (raw0 & 0x0000003fL) << 16
+        k |= (raw1 & 0x0003f000L) >> 4
+        k |= (raw1 & 0x0000003fL)
+        key.append(k)
+    return key
 
 SP1 = [
   0x01010400L, 0x00000000L, 0x00010000L, 0x01010404L,
@@ -300,83 +300,83 @@ SP8 = [
   ]
 
 def desfunc(block, keys):
-  (leftt, right) = unpack('>II', block)
-  
-  work = ((leftt >> 4) ^ right) & 0x0f0f0f0fL
-  right ^= work
-  leftt ^= (work << 4)
-  work = ((leftt >> 16) ^ right) & 0x0000ffffL
-  right ^= work
-  leftt ^= (work << 16)
-  work = ((right >> 2) ^ leftt) & 0x33333333L
-  leftt ^= work
-  right ^= (work << 2)
-  work = ((right >> 8) ^ leftt) & 0x00ff00ffL
-  leftt ^= work
-  right ^= (work << 8)
-  right = ((right << 1) | ((right >> 31) & 1L)) & 0xffffffffL
-  work = (leftt ^ right) & 0xaaaaaaaaL
-  leftt ^= work
-  right ^= work
-  leftt = ((leftt << 1) | ((leftt >> 31) & 1L)) & 0xffffffffL
+    (leftt, right) = unpack('>II', block)
 
-  for i in range(0, 32, 4):
-    work  = (right << 28) | (right >> 4)
-    work ^= keys[i]
-    fval  = SP7[ work		 & 0x3fL]
-    fval |= SP5[(work >>  8) & 0x3fL]
-    fval |= SP3[(work >> 16) & 0x3fL]
-    fval |= SP1[(work >> 24) & 0x3fL]
-    work  = right ^ keys[i+1]
-    fval |= SP8[ work		 & 0x3fL]
-    fval |= SP6[(work >>  8) & 0x3fL]
-    fval |= SP4[(work >> 16) & 0x3fL]
-    fval |= SP2[(work >> 24) & 0x3fL]
-    leftt ^= fval
-    work  = (leftt << 28) | (leftt >> 4)
-    work ^= keys[i+2]
-    fval  = SP7[ work		 & 0x3fL]
-    fval |= SP5[(work >>  8) & 0x3fL]
-    fval |= SP3[(work >> 16) & 0x3fL]
-    fval |= SP1[(work >> 24) & 0x3fL]
-    work  = leftt ^ keys[i+3]
-    fval |= SP8[ work		 & 0x3fL]
-    fval |= SP6[(work >>  8) & 0x3fL]
-    fval |= SP4[(work >> 16) & 0x3fL]
-    fval |= SP2[(work >> 24) & 0x3fL]
-    right ^= fval
+    work = ((leftt >> 4) ^ right) & 0x0f0f0f0fL
+    right ^= work
+    leftt ^= (work << 4)
+    work = ((leftt >> 16) ^ right) & 0x0000ffffL
+    right ^= work
+    leftt ^= (work << 16)
+    work = ((right >> 2) ^ leftt) & 0x33333333L
+    leftt ^= work
+    right ^= (work << 2)
+    work = ((right >> 8) ^ leftt) & 0x00ff00ffL
+    leftt ^= work
+    right ^= (work << 8)
+    right = ((right << 1) | ((right >> 31) & 1L)) & 0xffffffffL
+    work = (leftt ^ right) & 0xaaaaaaaaL
+    leftt ^= work
+    right ^= work
+    leftt = ((leftt << 1) | ((leftt >> 31) & 1L)) & 0xffffffffL
 
-  right = (right << 31) | (right >> 1)
-  work = (leftt ^ right) & 0xaaaaaaaaL
-  leftt ^= work
-  right ^= work
-  leftt = (leftt << 31) | (leftt >> 1)
-  work = ((leftt >> 8) ^ right) & 0x00ff00ffL
-  right ^= work
-  leftt ^= (work << 8)
-  work = ((leftt >> 2) ^ right) & 0x33333333L
-  right ^= work
-  leftt ^= (work << 2)
-  work = ((right >> 16) ^ leftt) & 0x0000ffffL
-  leftt ^= work
-  right ^= (work << 16)
-  work = ((right >> 4) ^ leftt) & 0x0f0f0f0fL
-  leftt ^= work
-  right ^= (work << 4)
+    for i in range(0, 32, 4):
+        work  = (right << 28) | (right >> 4)
+        work ^= keys[i]
+        fval  = SP7[ work            & 0x3fL]
+        fval |= SP5[(work >>  8) & 0x3fL]
+        fval |= SP3[(work >> 16) & 0x3fL]
+        fval |= SP1[(work >> 24) & 0x3fL]
+        work  = right ^ keys[i+1]
+        fval |= SP8[ work            & 0x3fL]
+        fval |= SP6[(work >>  8) & 0x3fL]
+        fval |= SP4[(work >> 16) & 0x3fL]
+        fval |= SP2[(work >> 24) & 0x3fL]
+        leftt ^= fval
+        work  = (leftt << 28) | (leftt >> 4)
+        work ^= keys[i+2]
+        fval  = SP7[ work            & 0x3fL]
+        fval |= SP5[(work >>  8) & 0x3fL]
+        fval |= SP3[(work >> 16) & 0x3fL]
+        fval |= SP1[(work >> 24) & 0x3fL]
+        work  = leftt ^ keys[i+3]
+        fval |= SP8[ work            & 0x3fL]
+        fval |= SP6[(work >>  8) & 0x3fL]
+        fval |= SP4[(work >> 16) & 0x3fL]
+        fval |= SP2[(work >> 24) & 0x3fL]
+        right ^= fval
 
-  leftt &= 0xffffffffL
-  right &= 0xffffffffL
-  return pack('>II', right, leftt)
+    right = (right << 31) | (right >> 1)
+    work = (leftt ^ right) & 0xaaaaaaaaL
+    leftt ^= work
+    right ^= work
+    leftt = (leftt << 31) | (leftt >> 1)
+    work = ((leftt >> 8) ^ right) & 0x00ff00ffL
+    right ^= work
+    leftt ^= (work << 8)
+    work = ((leftt >> 2) ^ right) & 0x33333333L
+    right ^= work
+    leftt ^= (work << 2)
+    work = ((right >> 16) ^ leftt) & 0x0000ffffL
+    leftt ^= work
+    right ^= (work << 16)
+    work = ((right >> 4) ^ leftt) & 0x0f0f0f0fL
+    leftt ^= work
+    right ^= (work << 4)
+
+    leftt &= 0xffffffffL
+    right &= 0xffffffffL
+    return pack('>II', right, leftt)
 
 
 # test
 if __name__ == '__main__':
-  key = '0123456789abcdef'.decode('hex')
-  plain = '0123456789abcdef'.decode('hex')
-  cipher = '6e09a37726dd560c'.decode('hex')
-  ek = deskey(key, False)
-  dk = deskey(key, True)
-  assert desfunc(plain, ek) == cipher
-  assert desfunc(desfunc(plain, ek), dk) == plain
-  assert desfunc(desfunc(plain, dk), ek) == plain
-  print 'test succeeded.'
+    key = '0123456789abcdef'.decode('hex')
+    plain = '0123456789abcdef'.decode('hex')
+    cipher = '6e09a37726dd560c'.decode('hex')
+    ek = deskey(key, False)
+    dk = deskey(key, True)
+    assert desfunc(plain, ek) == cipher
+    assert desfunc(desfunc(plain, ek), dk) == plain
+    assert desfunc(desfunc(plain, dk), ek) == plain
+    print 'test succeeded.'
