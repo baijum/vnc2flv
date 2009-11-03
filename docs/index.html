@@ -1,0 +1,456 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>vnc2flv - Desktop Screen Recorder</title>
+<style type="text/css"><!--
+blockquote { background: #eeeeee; }
+--></style>
+</head><body>
+
+<h1>vnc2flv</h1>
+<p>
+Desktop Screen Recorder for UNIX, Linux, Windows or Mac.
+
+<p>
+<a href="http://www.unixuser.org/~euske/python/vnc2flv/index.html">Homepage</a>
+&nbsp;
+<a href="#changes">Recent Changes</a>
+
+<div align=right class=lastmod>
+<!-- hhmts start -->
+Last Modified: Sat Oct 31 21:04:36 JST 2009
+<!-- hhmts end -->
+</div>
+
+<ul>
+<li> <a href="#intro">What's It?</a>
+<li> <a href="#source">Download</a>
+<li> <a href="#install">How to Install</a>
+<li> <a href="#usage">How to Use</a>
+<li> <a href="#addaudio">Adding Audio</a>
+<li> <a href="#embed">Embedding Movie</a>
+<li> <a href="#changes">Changes</a>
+<li> <a href="#related">Related Links</a>
+<li> <a href="#license">Terms and Conditions</a>
+</ul>
+
+<a name="intro"></a>
+<hr noshade>
+<h2>What's It?</h2>
+<p>
+Vnc2flv is a cross-platform screen recording tool for UNIX, Windows or Mac.
+It captures a VNC desktop session (either your own screen or
+a remote computer) and saves as a Flash Video (FLV) file.
+<p>
+(Vnc2flv is a rewrite of its predecessor, vnc2swf. As FLV format is
+more prevalent today, vnc2flv is specialized for FLV format and
+aims at a simpler and more lightweight functionality.)
+
+<p>
+<strong>Demo:</strong> (created with vnc2flv itself)<br>
+<object width="425" height="344"><param name="movie" value="http://www.youtube.com/v/DcijI6EagYI&hl=en&fs=1&"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/DcijI6EagYI&hl=en&fs=1&" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="425" height="344"></embed></object>
+<br>
+
+<a name="source"></a>
+<p>
+<strong>Download:</strong><br>
+<a href="http://www.unixuser.org/~euske/python/vnc2flv/vnc2flv-20091025.tar.gz">
+http://www.unixuser.org/~euske/python/vnc2flv/vnc2flv-20091025.tar.gz
+</a><br>
+
+<p>
+<strong>Questions and Comments:</strong> (post here!)<br>
+<a href="http://groups.google.com/group/vnc2flv-users/">
+http://groups.google.com/group/vnc2flv-users/
+</a><br>
+
+<a name="install"></a>
+<hr noshade>
+<h2>How to Install</h2>
+<ol>
+<li> First of all, you have to have the <a href="http://www.karlrunge.com/x11vnc/">x11vnc</a> server
+running on your screen. This program captures the screen sends it to other processes. 
+See also a list of <a href="#server">other VNC servers</a>.
+<li> Install <a href="http://www.python.org/download/">Python</a> 2.4 or newer.
+<li> Download and extract the <a href="#source">vnc2flv source distribution</a>.
+<li> Run <code>setup.py</code> to install:<br>
+<blockquote><pre>
+# <strong>python setup.py install</strong>
+</pre></blockquote>
+<li> Done!
+</ol>
+
+<a name="install-windows"></a>
+<h3>Installing for Windows</h3>
+<p>
+Here is an additional instruction for Windows:
+<ol>
+<li> Install <a href="http://www.tightvnc.com/">TightVNC</a> 1.3.10 or newer.
+<li> Install <a href="http://www.mingw.org/">MinGW</a> 5.1.4 or newer.
+<li> Do the following instead:
+<blockquote><pre>
+&gt; <strong>python setup.py build -c mingw32 install</strong>
+</pre></blockquote>
+</ol>
+
+<a name="usage"></a>
+<hr noshade>
+<h2>How to Use</h2>
+<p>
+vnc2flv comes with several programs:
+<ul>
+<li> <a href="#flvrec.py">flvrec.py</a> (main recording tool)
+<li> <a href="#flvcat.py">flvcat.py</a> (for editing)
+<li> <a href="#flvaddmp3.py">flvaddmp3.py</a> (for adding mp3 audio)
+<li> <a href="#flvdump.py">flvdump.py</a> (for debugging use)
+<li> <a href="#recordwin.sh">recordwin.sh</a> (all-in-one script)
+</ul>
+
+<a name="flvrec.py"></a>
+<h3>flvrec.py</h3>
+<p>
+<code>flvrec.py</code> is the main recording program.
+It connects to a specified VNC server and
+immediately starts recording.
+It stops when it receives a SIGINT (or Ctrl-C is pressed).
+You need to have a VNC server running on the target machine in advance.
+<p>
+The generated file is playable via either desktop programs like ffmpeg, VLC or mplayer, 
+or other online Flash-based players.
+
+<h4>Syntax:</h4>
+<blockquote>
+<code>flvrec.py [<em>options</em>] [<em><u>host</u></em>[<em>:<u>display</u></em>]]</code>
+<p>
+&nbsp;&nbsp;&nbsp;or
+<p>
+<code>flvrec.py [<em>options</em>] [<em><u>host</u></em> [<em><u>port</u></em>]]</code>
+</blockquote>
+
+<h4>Examples:</h4>
+<blockquote><pre>
+$ <strong>x11vnc -quiet -localhost -viewonly -nopw -bg</strong>
+<em>(start up a vnc server)</em>
+
+The VNC desktop is:      localhost:0
+PORT=5900
+
+******************************************************************************
+Have you tried the x11vnc '-ncache' VNC client-side pixel caching feature yet?
+
+The scheme stores pixel data offscreen on the VNC viewer side for faster
+retrieval.  It should work with any VNC viewer.  Try it by running:
+
+    x11vnc -ncache 10 ...
+
+more info: http://www.karlrunge.com/x11vnc/#faq-client-caching
+
+$ <strong>flvrec.py localhost:0</strong>
+<em>(Record a local desktop)</em>
+
+$ <strong>flvrec.py -C 640x480+0-0 remotehost:0</strong>
+<em>(Record a remote desktop with a 640x480 window at the bottom left of the screen.)</em>
+
+$ <strong>flvrec.py -S 'arecord sample.wav'</strong>
+<em>(Record a local desktop and capture audio input simultaneously using the ALSA recording utility)</em>
+</pre></blockquote>
+
+<h4>Options:</h4>
+<dl>
+<dt> <code>-o <u><em>filename</em></u></code> 
+<dd> Specifies the output file name. By default, the output file is given
+with a unique name.
+
+<dt> <code>-r <em><u>fps</u></em></code> 
+<dd> Specifies the number of frames per second. (default: 15)
+
+<dt> <code>-K <u><em>keyframe</em></u></code> 
+<dd> Specifies the rate of key frames that is inserted in every this number of frames.
+(default: every 150 frames)
+
+<dt> <code>-P <u><em>pwdfile</em></u></code> 
+<dd> Specifies the password file for a vnc session.
+
+<dt> <code>-N</code> 
+<dd> Suppress the appearance of mouse pointer in the video.
+
+<dt> <code>-e <em><u>encoding</u>,<u>encoding</u>,...</em></code> 
+<dd> Specifies the vnc encoding methods. (default: raw)
+
+<dt> <code>-B <em><u>blocksize</u></em></code> 
+<dd> Specifies the block size. (default: 32)
+
+<dt> <code>-C <em><u>w</u>x<u>h</u>{+|-}<u>x</u>{+|-}<u>y</u></em></code> 
+<dd> Specifies the clipping. (default: entire screen)
+
+<dt> <code>-S <em><u>commandline</u></em></code>
+<dd> Starts a child process immediately after the recording is started.
+This process runs parallely with flvrec.py and can be used for recording audio.
+When the recording is stopped, a SIGINT is sent to the subprocess.
+
+<dt> <code>-d</code>
+<dd> Increases the debug level.
+
+</dl>
+
+
+<a name="flvcat.py"></a>
+<h3>flvcat.py</h3>
+<p>
+<code>flvcat.py</code> is a simplistic editing program for a FLV movie.
+It supports concatenating multiple movies, clipping a movie's
+frame size, re-sampling a movie into a smaller size with auto-panning,
+etc.
+
+<h4>Syntax:</h4>
+<blockquote>
+<code>flvcat.py [<em>options</em>] <em><u>src1</u>[<em>:<u>ranges1</u></em>] <u>src2</u>[<em>:<u>ranges2</u></em>] ...</em> <em><u>output</u></em></code>
+</blockquote>
+
+<p>
+For each movie file, you can clip the parts of the movie to add by
+specifying its ranges.  <em>Ranges</em> is comma-separated,
+hyphenated list of milliseconds. For example, 
+<blockquote>
+<code>out.flv:10000-20000</code>
+</blockquote>
+means a 10-second clip from movie <code>out.flv</code> (0:10-0:20).
+Specifying only one end of the range is also supported:
+<blockquote>
+<code>out.flv:10000-</code>
+</blockquote>
+means the entire movie except the first 10 seconds.
+When <em>ranges</em> are omitted, the whole movie is used.
+
+
+<h4>Examples:</h4>
+<blockquote><pre>
+$ <strong>flvcat.py movie1.flv movie2.flv output.flv</strong>
+<em>(Concatenate movie1.flv and movie2.flv and save it as output.flv)</em>
+
+$ <strong>flvcat.py -W 640x480 movie1.flv output.flv</strong>
+<em>(Resize the movie1.flv with auto-panning with its window size 640x480 and save it as output.flv)</em>
+
+$ <strong>flvcat.py movie1.flv:15000-30000 output.flv</strong>
+<em>(Clip the part of movie1.flv from 0:15 to 0:30 and save it as output.flv)</em>
+
+$ <strong>flvcat.py movie1.flv:2500- output.flv</strong>
+<em>(Chop the first 2.5 seconds off and save it as output.flv)</em>
+</pre></blockquote>
+
+<h4>Options:</h4>
+<dl>
+<dt> <code>-r <em><u>fps</u></em></code> 
+<dd> Specifies the number of frames per second. (default: 15)
+
+<dt> <code>-K <u><em>keyframe</em></u></code> 
+<dd> Specifies the rate of key frames that is inserted in every this number of frames.
+(default: every 150 frames)
+
+<dt> <code>-B <em><u>blocksize</u></em></code> 
+<dd> Specifies the block size. (default: 32)
+
+<dt> <code>-C <em><u>w</u>x<u>h</u>{+|-}<u>x</u>{+|-}<u>y</u></em></code> 
+<dd> Specifies the clipping. (default: entire frame)
+
+<dt> <code>-W <em><u>w</u>x<u>h</u></em></code> 
+<dd> Specifies the window size for auto panning. Auto panning tracks
+the changes in the screen and tries to focus on the active part of the screen.
+This helps reducing the movie screen size.
+(default: no auto panning)
+
+<dt> <code>-S <em><u>speed</u></em></code> 
+<dd> Specifies the speed of auto panning. (default: 60 frames)
+
+<dt> <code>-f</code>
+<dd> Forces overwriting the output file.
+
+</dl>
+
+<a name="flvaddmp3.py"></a>
+<h3>flvaddmp3.py</h3>
+<p>
+Add mp3 audio files to a movie.
+
+<h4>Syntax:</h4>
+<blockquote>
+<code>flvaddmp3.py [<em>options</em>] <em><u>src</u></em> <em><u>mp3file1</u></em>[<em>:<u>ranges</u></em>] <em><u>mp3file2</u></em>[<em>:<u>ranges</u></em>] ...</em> <em><u>output</u></em></code>
+</blockquote>
+
+<h4>Options:</h4>
+<dl>
+<dt> <code>-f</code>
+<dd> Forces overwriting the output file.
+
+</dl>
+
+<a name="flvdump.py"></a>
+<h3>flvdump.py (for debugging)</h3>
+<p>
+This program dumps the contents of a FLV file.
+This is used solely for debugging purposes.
+<h4>Syntax:</h4>
+<blockquote>
+<code>flvdump.py [<em>options</em>] <em><u>flvfile</u></em></code>
+</blockquote>
+
+
+<a name="recordwin.sh"></a>
+<h3>recordwin.sh</h3>
+<p>
+This program is a shell script that launches a VNC server (<code>x11vnc</code>), 
+the screen recorder (<code>flvrec.py</code>) and
+a voice recorder (<code>arecord</code>), and combines the output files into a
+single playable FLV file. A recording area in the screen can be either an entire desktop
+or a single window. In the latter case, a target window can be chosen by
+giving the window ID or window name, or simply click a window after
+a prompt cursor appears. When a filename is unspecified,
+a generated movie is automatically given a unique filename.
+
+<h4>Syntax:</h4>
+<blockquote>
+<code>recordwin.sh [<em>options</em>] [<em><u>filename</u></em>]</code>
+</blockquote>
+
+<h4>Options:</h4>
+<dl>
+<dt> <code>-all</code>
+<dd> Instructs to record an entire desktop.
+
+<dt> <code>-name <em>window_name</em></code>
+<dd> Specifies the title of the target window.
+
+<dt> <code>-id <em>window_id</em></code>
+<dd> Specifies the Window ID of the target window.
+
+<dt> <code>-display <em>display_name</em></code>
+<dd> Specifies the name of the X11 screen where a VNC server is to be started.
+
+</dl>
+
+
+<a name="addaudio"></a>
+<hr noshade>
+<h2>Adding Audio</h2>
+<p>
+<a href="#flvrec.py"><code>flvrec.py</code></a>
+can designate a child process to record audio during recording.
+By giving <code>-S</code> option, the specified command line is executed 
+when the recording is started. The child process can capture audio input and
+encode it as an appropriate format. The process is terminated 
+when the recording is stopped. To put it onto an FLV movie, the audio needs to be
+encoded as MP3 format. After the recording is finished, the user can
+use the <a href="#flvaddmp3.py"><code>flvaddmp3.py</code></a> command
+to combine the movie and audio output.
+
+<h4>1. Record the screen and audio simultaneously:</h4>
+<blockquote><pre>
+$ <strong>flvrec.py -S 'arecord -f cd out.wav'</strong>
+</pre></blockquote>
+
+<h4>2. Convert the WAV file into MP3:</h4>
+<blockquote><pre>
+$ <strong>lame out.wav out.mp3</strong>
+</pre></blockquote>
+
+<h4>3. Add the MP3 file to the movie:</h4>
+<blockquote><pre>
+$ <strong>flvaddmp3 out200908122312.flv out.mp3 final.flv</strong>
+</pre></blockquote>
+
+<big><big><big>&nbsp;&nbsp;<strong>or</strong></big></big></big>
+
+<h4>1. Just do this:</h4>
+<blockquote><pre>
+$ <strong>recordwin.sh</strong>
+</pre></blockquote>
+
+<p>
+<a href="#recordwin.sh"><code>recordwin.sh</code></a> is a script for making these tasks easy.
+It launches a VNC server and automatically does the things described above.
+
+
+<a name="embed"></a>
+<hr noshade>
+<h2>Embedding Movie</h2>
+<p>
+Currently the following free/opensource embeddable movie players are known to work with vnc2flv:
+<ul>
+<li> <A href="http://www.longtailvideo.com/players/jw-flv-player/">JW FLV Player</a>
+<li> <A href="http://www.osflv.com/">OS FLV</a>
+<li> <A href="http://flv-player.net/">FLV Player</a>
+</ul>
+
+
+<a name="changes"></a>
+<hr noshade>
+<h2>Changes</h2>
+<ul>
+<li> 2009/10/25: FLV metadata support.
+<li> 2009/08/30: recordwin.sh script is added.
+<li> 2009/08/24: Improved documentation.
+<li> 2009/08/17: Synchronized audio recording support is added.
+<li> 2009/08/02: various bugfixes. Command name changed: mp3add.py -&gt; flvaddmp3.py.
+<li> 2009/07/22: flvcat.py added.
+<li> 2009/07/04: rfb protocol handling modified. (hopefully better auto-scrolling)
+<li> 2009/07/02: mp3add.py and flvdump.py added.
+<li> 2009/06/28: Initial release.
+</ul>
+
+<a name="related"></a>
+<a name="server"></a>
+<hr noshade>
+<h2>Related Links</h2>
+<ul>
+  <li> VNC servers:
+    <a href="http://www.realvnc.com/">RealVNC</a>,
+    <a href="http://www.tightvnc.com/">TightVNC</a>,
+    <a href="http://ultravnc.sourceforge.net/">UltraVNC</a>,
+    <a href="http://www.karlrunge.com/x11vnc/">x11vnc</a>
+  <li> FLV players (desktop):
+    <A href="http://ffmpeg.org/">FFMpeg</a>,
+    <A href="http://www.mplayerhq.hu/">MPlayer</a>,
+    <A href="http://www.videolan.org/vlc/">VLC media player</a>
+  <li> FLV players (flash):
+    <A href="http://www.longtailvideo.com/players/jw-flv-player/">JW FLV Player</a>,
+    <A href="http://www.osflv.com/">OS FLV</a>,
+    <A href="http://flv-player.net/">FLV Player</a>
+  <li> Flash players:
+    <a href="http://www.adobe.com/products/flashplayer/">Adobe Flash Player</a>,
+    <a href="http://www.gnashdev.org/">GNU Gnash</a>
+</ul>
+
+<a name="license"></a>
+<hr noshade>
+<h2>Terms and Conditions</h2>
+<p>
+<small>
+Copyright (c) 2009  Yusuke Shinyama &lt;yusuke at cs dot nyu dot edu&gt;
+<p>
+Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation
+files (the "Software"), to deal in the Software without
+restriction, including without limitation the rights to use,
+copy, modify, merge, publish, distribute, sublicense, and/or
+sell copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following
+conditions:
+<p>
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+<p>
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY
+KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+</small>
+
+<hr noshade>
+<address>Yusuke Shinyama</address>
+</body>
+</html>

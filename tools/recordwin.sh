@@ -1,0 +1,78 @@
+#!/bin/sh
+##
+##  recordwin.sh
+##
+##  Quick recording script for UNIX.
+##
+##  usage:
+##     recordwin.sh [-display disp] [-name winname] [-id winid] [output.flv]
+##
+##  Requires: x11vnc, xwininfo, arecord, lame, awk, date
+##
+
+TMPDIR=/tmp
+FLVREC=${FLVREC:-flvrec.py}
+FLVADDMP3=${FLVADDMP3:-flvaddmp3.py}
+X11VNC=${X11VNC:-x11vnc}
+XWININFO=${XWININFO:-xwininfo}
+ARECORD=${ARECORD:-arecord}
+LAME=${LAME:-lame}
+AWK=${AWK:-awk}
+id=`date '+%Y%m%d%H%M%S'`.$$
+
+usage() {
+    echo "usage: $0 [-all] [-display display] [-name windowname] [-id windowid] [-type filetype] [outfile]"
+    exit 100
+}
+
+# Parse arguments.
+outfile=
+flvrecopts=
+xwopts=
+desktop=
+display="$DISPLAY"
+while [ $# -gt 0 ]; do
+    case "$1" in
+	-all|-a) desktop=1;;
+	-name) shift; xwopts="$xwopts -name $1";;
+	-id) shift; xwopts="$xwopts -id $1";;
+	-display|-d) shift; display="$1"; xwopts="$xwopts -display $1";;
+	-*) usage;;
+        *) outfile="$1";;
+    esac
+    shift
+done
+
+if [ "X$desktop" = "X" ]; then
+  echo "Please select the window..."
+  info=`$XWININFO $xwopts 2>/dev/null`
+  if [ "X$info" = "X" ]; then
+    echo "Window $xwopts not found!"
+    exit 2
+  fi
+  geometry=`echo "$info" |
+               $AWK '/Absolute upper-left X:/{x=$4}
+                     /Absolute upper-left Y:/{y=$4}
+                     /Width:/{w=$2} /Height:/{h=$2}
+                     END {printf "%dx%d+%d+%d",w,h,x,y}' `
+  flvrecopts="-C $geometry"
+fi
+
+if [ "X$outfile" = "X" ]; then
+  outfile=out.$id.flv
+fi
+
+tmpbase=$TMPDIR/vnc2flv.$id
+flvfile=${tmpbase}.flv
+wavfile=${tmpbase}.wav
+mp3file=${tmpbase}.mp3
+
+# Start recording.
+trap ":" INT
+# XXX err if the port 5900 is already occupied.
+$X11VNC -quiet -bg -nopw -display "$display" -viewonly -localhost -once &&
+  flvrec.py -S "$ARECORD $wavfile" -o "$flvfile" $flvrecopts &&
+  [ -f "$flvfile" -a -f "$wavfile" ] &&
+  $LAME "$wavfile" "$mp3file" &&
+  $FLVADDMP3 -f "$flvfile" "$mp3file" "$outfile" &&
+  rm "$flvfile" "$wavfile" "$mp3file"
