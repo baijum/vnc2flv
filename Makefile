@@ -4,7 +4,7 @@
 PACKAGE=vnc2flv
 PREFIX=/usr/local
 
-GIT=git
+SVN=svn
 PYTHON=python
 RM=rm -f
 CP=cp -f
@@ -35,7 +35,7 @@ testflvscreen:
 
 # Maintainance:
 commit: clean
-	$(GIT) commit -a
+	$(SVN) commit
 
 sdist: clean
 	$(PYTHON) setup.py sdist
