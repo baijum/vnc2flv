@@ -21,9 +21,8 @@ ATYPE = { 0:'PCM-p', 1:'ADPCM', 2:'MP3', 3:'PCM-l', 4:'Nel16', 5:'Nel8', 6:'Nell
           7:'GAPCM', 8:'GMPCM', 10:'AAC', 14:'MP3-8', 15:'Dev' }
 FTYPE = { 1:'key', 2:'inter', 3:'disposable', 4:'genkey', 5:'command' }
 CODEC = { 1:'JPEG', 2:'H.263', 3:'Scr', 4:'VP6', 5:'VP6A', 6:'Scrv2', 7:'AVC' }
-def flvdump(fname, verbose=0, debug=0):
-    fin = file(fname, 'rb')
-    parser = FLVParser(fin, debug=debug)
+def flvdump(fp, verbose=0, debug=0):
+    parser = FLVParser(fp, debug=debug)
     timestamp = 0
     other = video = audio = 0
     for (i, (tag, length, timestamp, offset)) in enumerate(parser):
@@ -48,18 +47,18 @@ def flvdump(fname, verbose=0, debug=0):
         elif tag == 9:
             # Video tag
             ftype = FTYPE.get(ord(data[0]) >> 4, '?')
-            fp = StringIO(data)
-            codec = ord(fp.read(1)) & 0xf
+            buf = StringIO(data)
+            codec = ord(buf.read(1)) & 0xf
             cname = CODEC.get(codec, '?')
             video += 1
             if 1 <= verbose:
                 if codec == 3:
-                    x = ord(fp.read(1))
-                    y = ord(fp.read(1))
+                    x = ord(buf.read(1))
+                    y = ord(buf.read(1))
                     blockwidth = ((x >> 4)+1) * 16
                     imagewidth = (x & 0xf) << 8 | y
-                    x = ord(fp.read(1))
-                    y = ord(fp.read(1))
+                    x = ord(buf.read(1))
+                    y = ord(buf.read(1))
                     blockheight = ((x >> 4)+1) * 16
                     imageheight = (x & 0xf) << 8 | y
                     print ('%08d: video: %s/%s %dx%d (block:%dx%d) (%d bytes)' %
@@ -69,8 +68,8 @@ def flvdump(fname, verbose=0, debug=0):
                         r = []
                         for y in xrange((imageheight + blockheight-1)/blockheight):
                             for x in xrange((imagewidth + blockwidth-1)/blockwidth):
-                                (n,) = unpack('>H', fp.read(2))
-                                fp.read(n)
+                                (n,) = unpack('>H', buf.read(2))
+                                buf.read(n)
                                 r.append(n)
                         print ' ',r
                 else:
@@ -114,7 +113,9 @@ def main(argv):
         elif k == '-q': verbose -= 1
     if not args: return usage()
     for fname in args:
-        flvdump(fname, verbose=verbose, debug=debug)
+        fp = file(fname, 'rb')
+        flvdump(fp, verbose=verbose, debug=debug)
+        fp.close()
     return
 
 if __name__ == "__main__": sys.exit(main(sys.argv))
