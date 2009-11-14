@@ -19,7 +19,7 @@ Desktop Screen Recorder for UNIX, Linux, Windows or Mac.
 
 <div align=right class=lastmod>
 <!-- hhmts start -->
-Last Modified: Tue Nov  3 10:56:19 JST 2009
+Last Modified: Sat Nov 14 23:36:16 JST 2009
 <!-- hhmts end -->
 </div>
 
@@ -34,6 +34,25 @@ Last Modified: Tue Nov  3 10:56:19 JST 2009
 <li> <a href="#related">Related Links</a>
 <li> <a href="#license">Terms and Conditions</a>
 </ul>
+
+<a name="source"></a>
+<p>
+<strong>Download:</strong><br>
+<a href="http://pypi.python.org/pypi/vnc2flv/">
+http://pypi.python.org/pypi/vnc2flv/
+</a><br>
+
+<p>
+<strong>Discussion:</strong> (for questions and comments, post here)<br>
+<a href="http://groups.google.com/group/vnc2flv-users/">
+http://groups.google.com/group/vnc2flv-users/
+</a><br>
+
+<P>
+<strong>View the source:</strong><br>
+<a href="http://code.google.com/p/vnc2flv/source/browse/trunk/vnc2flv">
+http://code.google.com/p/vnc2flv/source/browse/trunk/vnc2flv
+</a>
 
 <a name="intro"></a>
 <hr noshade>
@@ -51,25 +70,6 @@ aims at a simpler and more lightweight functionality.)
 <strong>Demo:</strong> (created with vnc2flv itself)<br>
 <object width="425" height="344"><param name="movie" value="http://www.youtube.com/v/DcijI6EagYI&hl=en&fs=1&"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/DcijI6EagYI&hl=en&fs=1&" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="425" height="344"></embed></object>
 <br>
-
-<a name="source"></a>
-<p>
-<strong>Download:</strong><br>
-<a href="http://www.unixuser.org/~euske/python/vnc2flv/vnc2flv-20091103.tar.gz">
-http://www.unixuser.org/~euske/python/vnc2flv/vnc2flv-20091103.tar.gz
-</a><br>
-
-<p>
-<strong>Discussion:</strong> (for questions and comments, post here)<br>
-<a href="http://groups.google.com/group/vnc2flv-users/">
-http://groups.google.com/group/vnc2flv-users/
-</a><br>
-
-<P>
-<strong>View the source:</strong><br>
-<a href="http://code.google.com/p/vnc2flv/source/browse/trunk/vnc2flv">
-http://code.google.com/p/vnc2flv/source/browse/trunk/vnc2flv
-</a>
 
 <a name="install"></a>
 <hr noshade>
@@ -129,7 +129,7 @@ or other online Flash-based players.
 <blockquote>
 <code>flvrec.py [<em>options</em>] [<em><u>host</u></em>[<em>:<u>display</u></em>]]</code>
 <p>
-&nbsp;&nbsp;&nbsp;or
+&nbsp;&nbsp;&nbsp;<strong>or</strong>
 <p>
 <code>flvrec.py [<em>options</em>] [<em><u>host</u></em> [<em><u>port</u></em>]]</code>
 </blockquote>
@@ -365,7 +365,7 @@ $ <strong>lame out.wav out.mp3</strong>
 $ <strong>flvaddmp3 out200908122312.flv out.mp3 final.flv</strong>
 </pre></blockquote>
 
-<big><big><big>&nbsp;&nbsp;<strong>or</strong></big></big></big>
+<big><big>&nbsp;&nbsp;<strong>or</strong></big></big>
 
 <h4>1. Just do this:</h4>
 <blockquote><pre>
@@ -393,6 +393,7 @@ Currently the following free/opensource embeddable movie players are known to wo
 <hr noshade>
 <h2>Changes</h2>
 <ul>
+<li> 2009/11/14: SIGINT bug fixed.
 <li> 2009/10/25: FLV metadata support.
 <li> 2009/08/30: recordwin.sh script is added.
 <li> 2009/08/24: Improved documentation.
