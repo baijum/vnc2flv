@@ -37,16 +37,9 @@ testflvscreen:
 commit: clean
 	$(SVN) commit
 
-sdist: clean
-	$(PYTHON) setup.py sdist
-
 register: clean
 	$(PYTHON) setup.py sdist upload register
 
-VERSION=`$(PYTHON) $(PACKAGE)/__init__.py`
 WEBDIR=$$HOME/Site/unixuser.org/python/$(PACKAGE)
-DISTFILE=$(PACKAGE)-$(VERSION).tar.gz
-publish: sdist
-	$(CP) dist/$(DISTFILE) $(WEBDIR)
-	$(LN) $(DISTFILE) $(WEBDIR)/$(PACKAGE)-current.tar.gz
+publish:
 	$(CP) docs/*.html $(WEBDIR)/
