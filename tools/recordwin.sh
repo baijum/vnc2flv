@@ -71,7 +71,7 @@ mp3file=${tmpbase}.mp3
 trap ":" INT
 # XXX err if the port 5900 is already occupied.
 $X11VNC -quiet -bg -nopw -display "$display" -viewonly -localhost -once &&
-  flvrec.py -S "$ARECORD $wavfile" -o "$flvfile" $flvrecopts &&
+  $FLVREC -S "$ARECORD $wavfile" -o "$flvfile" $flvrecopts &&
   [ -f "$flvfile" -a -f "$wavfile" ] &&
   $LAME "$wavfile" "$mp3file" &&
   $FLVADDMP3 -f "$flvfile" "$mp3file" "$outfile" &&

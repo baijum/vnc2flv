@@ -40,10 +40,9 @@ def flvrec(filename, host='localhost', port=5900,
             print >>sys.stderr, 'start recording'
         while 1:
             client.idle()
+    except KeyboardInterrupt:
         if verbose:
             print >>sys.stderr, 'stop recording'
-    except KeyboardInterrupt:
-        pass
     except socket.error, e:
         print >>sys.stderr, 'Socket error:', e
     except RFBError, e:
