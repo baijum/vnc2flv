@@ -32,21 +32,25 @@ def flvrec(filename, host='localhost', port=5900,
                               pwdcache=pwdcache, preferred_encoding=preferred_encoding,
                               debug=debug)
     subproc = None
+    def sigint_handler(sig, frame):
+        raise KeyboardInterrupt
+    signal.signal(signal.SIGINT, sigint_handler)
+    if verbose:
+        print >>sys.stderr, 'start recording'
     try:
         if cmdline:
             subproc = subprocess.Popen(cmdline, shell=True)
         client.open()
-        if verbose:
-            print >>sys.stderr, 'start recording'
         while 1:
             client.idle()
     except KeyboardInterrupt:
-        if verbose:
-            print >>sys.stderr, 'stop recording'
+        pass
     except socket.error, e:
         print >>sys.stderr, 'Socket error:', e
     except RFBError, e:
         print >>sys.stderr, 'RFB error:', e
+    if verbose:
+        print >>sys.stderr, 'stop recording'
     client.close()
     writer.close()
     fp.close()
