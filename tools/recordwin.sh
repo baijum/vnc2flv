@@ -5,7 +5,7 @@
 ##  Quick recording script for UNIX.
 ##
 ##  usage:
-##     recordwin.sh [-display disp] [-name winname] [-id winid] [output.flv]
+##     recordwin.sh [-host hostname] [-all] [-display disp] [-name winname] [-id winid] [output.flv]
 ##
 ##  Requires: x11vnc, xwininfo, arecord, lame, awk, date
 ##
@@ -21,11 +21,12 @@ AWK=${AWK:-awk}
 id=`date '+%Y%m%d%H%M%S'`.$$
 
 usage() {
-    echo "usage: $0 [-all] [-display display] [-name windowname] [-id windowid] [-type filetype] [outfile]"
+    echo "usage: $0 [-host hostname] [-all] [-display display] [-name windowname] [-id windowid] [-type filetype] [outfile]"
     exit 100
 }
 
 # Parse arguments.
+host=
 outfile=
 flvrecopts=
 xwopts=
@@ -37,13 +38,16 @@ while [ $# -gt 0 ]; do
 	-name) shift; xwopts="$xwopts -name $1";;
 	-id) shift; xwopts="$xwopts -id $1";;
 	-display|-d) shift; display="$1"; xwopts="$xwopts -display $1";;
+	-host) shift; host="$1";;
 	-*) usage;;
         *) outfile="$1";;
     esac
     shift
 done
 
-if [ "X$desktop" = "X" ]; then
+if [ "X$host" != "X" ]; then
+  flvrecopts="$host"
+elif [ "X$desktop" = "X" ]; then
   echo "Please select the window..."
   info=`$XWININFO $xwopts 2>/dev/null`
   if [ "X$info" = "X" ]; then
@@ -70,7 +74,9 @@ mp3file=${tmpbase}.mp3
 # Start recording.
 trap ":" INT
 # XXX err if the port 5900 is already occupied.
-$X11VNC -quiet -bg -nopw -display "$display" -viewonly -localhost -once &&
+( if [ "X$host" = "X" ]; then
+    $X11VNC -quiet -bg -nopw -display "$display" -viewonly -localhost -once
+  fi ) &&
   $FLVREC -S "$ARECORD $wavfile" -o "$flvfile" $flvrecopts &&
   [ -f "$flvfile" -a -f "$wavfile" ] &&
   $LAME "$wavfile" "$mp3file" &&
