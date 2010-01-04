@@ -31,31 +31,35 @@ def flvrec(filename, host='localhost', port=5900,
     client = RFBNetworkClient(host, port, sink, timeout=500/framerate,
                               pwdcache=pwdcache, preferred_encoding=preferred_encoding,
                               debug=debug)
-    subproc = None
     def sigint_handler(sig, frame):
         raise KeyboardInterrupt
     signal.signal(signal.SIGINT, sigint_handler)
     if verbose:
         print >>sys.stderr, 'start recording'
-    try:
-        if cmdline:
-            subproc = subprocess.Popen(cmdline, shell=True)
-        client.open()
-        while 1:
-            client.idle()
-    except KeyboardInterrupt:
-        pass
-    except socket.error, e:
-        print >>sys.stderr, 'Socket error:', e
-    except RFBError, e:
-        print >>sys.stderr, 'RFB error:', e
-    if verbose:
-        print >>sys.stderr, 'stop recording'
-    client.close()
-    writer.close()
-    fp.close()
-    if subproc:
-        os.kill(subproc.pid, signal.SIGINT)
+    subproc = None
+    try:    
+        try:
+            if cmdline:
+                subproc = subprocess.Popen(cmdline, shell=True)
+            client.open()
+            while 1:
+                client.idle()
+        except KeyboardInterrupt:
+            pass
+        except socket.error, e:
+            print >>sys.stderr, 'Socket error:', e
+            return 1
+        except RFBError, e:
+            print >>sys.stderr, 'RFB error:', e
+            return 1
+    finally:
+        if verbose:
+            print >>sys.stderr, 'stop recording'
+        client.close()
+        writer.close()
+        fp.close()
+        if subproc:
+            os.kill(subproc.pid, signal.SIGINT)
     return
 
 
@@ -108,10 +112,9 @@ def main(argv):
             host = args[0]
     if 2 <= len(args):
         port = int(args[1])
-    flvrec(filename, host, port, framerate=framerate, keyframe=keyframe,
-           preferred_encoding=preferred_encoding, pwdfile=pwdfile,
-           blocksize=blocksize, clipping=clipping, cmdline=cmdline,
-           debug=debug, verbose=verbose)
-    return
+    return flvrec(filename, host, port, framerate=framerate, keyframe=keyframe,
+                  preferred_encoding=preferred_encoding, pwdfile=pwdfile,
+                  blocksize=blocksize, clipping=clipping, cmdline=cmdline,
+                  debug=debug, verbose=verbose)
 
 if __name__ == "__main__": sys.exit(main(sys.argv))
