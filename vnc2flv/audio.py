@@ -125,6 +125,8 @@ class AudioBuffer(object):
     def load(self, fp, timeranges=None):
         n = 0
         for (nsamples, rate, channels, data) in parse_mp3(fp):
+            if rate not in FLV_RATE:
+                raise ValueError('audio sampling rate not supported for FLV')
             if self.rate == None:
                 self.rate = rate
             elif self.rate != rate:
