@@ -31,36 +31,41 @@ def flvrec(filename, host='localhost', port=5900,
     client = RFBNetworkClient(host, port, sink, timeout=500/framerate,
                               pwdcache=pwdcache, preferred_encoding=preferred_encoding,
                               debug=debug)
-    def sigint_handler(sig, frame):
-        raise KeyboardInterrupt
-    signal.signal(signal.SIGINT, sigint_handler)
     if verbose:
         print >>sys.stderr, 'start recording'
-    subproc = None
-    try:    
+    pid = 0
+    if cmdline:
+        pid = os.fork()
+        if pid == 0:
+            os.setpgrp()
+            os.execvp('sh', ['sh', '-c', cmdline])
+            sys.exit(1)
+    retval = 0
+    try:
+        def sigint_handler(sig, frame):
+            raise KeyboardInterrupt
+        signal.signal(signal.SIGINT, sigint_handler)
+        client.open()
         try:
-            if cmdline:
-                subproc = subprocess.Popen(cmdline, shell=True)
-            client.open()
             while 1:
                 client.idle()
-        except KeyboardInterrupt:
-            pass
-        except socket.error, e:
-            print >>sys.stderr, 'Socket error:', e
-            return 1
-        except RFBError, e:
-            print >>sys.stderr, 'RFB error:', e
-            return 1
-    finally:
-        if verbose:
-            print >>sys.stderr, 'stop recording'
-        client.close()
-        writer.close()
-        fp.close()
-        if subproc:
-            os.kill(subproc.pid, signal.SIGINT)
-    return
+        finally:
+            client.close()
+    except KeyboardInterrupt:
+        pass
+    except socket.error, e:
+        print >>sys.stderr, 'Socket error:', e
+        retval = 1
+    except RFBError, e:
+        print >>sys.stderr, 'RFB error:', e
+        retval = 1
+    if pid:
+        os.killpg(os.getpgid(pid), signal.SIGTERM)
+    if verbose:
+        print >>sys.stderr, 'stop recording'
+    writer.close()
+    fp.close()
+    return retval
 
 
 # main
