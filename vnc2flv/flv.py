@@ -2,7 +2,7 @@
 ##
 ##  flv.py - reading/writing FLV file format.
 ##
-##  Copyright (c) 2009 by Yusuke Shinyama
+##  Copyright (c) 2009-2010 by Yusuke Shinyama
 ##
 
 import sys

@@ -1,8 +1,8 @@
 #!/bin/sh
 ##
-##  recordwin.sh
+##  recordwin.sh - Quick recording script for UNIX.
 ##
-##  Quick recording script for UNIX.
+##  Copyright (c) 2009-2010 by Yusuke Shinyama
 ##
 ##  usage:
 ##     recordwin.sh [-host hostname] [-all] [-display disp] [-name winname] [-id winid] [output.flv]

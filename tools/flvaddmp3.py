@@ -2,7 +2,7 @@
 ##
 ##  flvaddmp3.py - put an mp3 audio to an existing FLV movie.
 ##
-##  Copyright (c) 2009 by Yusuke Shinyama
+##  Copyright (c) 2009-2010 by Yusuke Shinyama
 ##
 
 import sys, os, re

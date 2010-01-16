@@ -2,7 +2,7 @@
 ##
 ##  video.py - recoding VNC to FLV.
 ##
-##  Copyright (c) 2009 by Yusuke Shinyama
+##  Copyright (c) 2009-2010 by Yusuke Shinyama
 ##
 
 import sys, zlib, re

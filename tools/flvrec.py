@@ -2,7 +2,7 @@
 ##
 ##  flvrec.py - VNC to FLV recording tool.
 ##
-##  Copyright (c) 2009 by Yusuke Shinyama
+##  Copyright (c) 2009-2010 by Yusuke Shinyama
 ##
 
 import sys, time, socket, os, os.path, subprocess, signal

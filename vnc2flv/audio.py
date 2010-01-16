@@ -2,7 +2,7 @@
 ##
 ##  audio.py - mp3 file handling
 ##
-##  Copyright (c) 2009 by Yusuke Shinyama
+##  Copyright (c) 2009-2010 by Yusuke Shinyama
 ##
 
 import sys

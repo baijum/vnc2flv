@@ -2,7 +2,7 @@
 ##
 ##  rfb.py - handling VNC protocol.
 ##
-##  Copyright (c) 2009 by Yusuke Shinyama
+##  Copyright (c) 2009-2010 by Yusuke Shinyama
 ##
 
 # For the details of RFB protocol,

@@ -2,7 +2,7 @@
 ##
 ##  flvdump.py - dump the raw contents of a FLV file.
 ##
-##  Copyright (c) 2009 by Yusuke Shinyama
+##  Copyright (c) 2009-2010 by Yusuke Shinyama
 ##
 
 import sys, os
