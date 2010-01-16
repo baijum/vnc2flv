@@ -108,9 +108,9 @@ def parse_mp3(fp, debug=0):
     return
 
 
-##  AudioBuffer
+##  AudioSink
 ##
-class AudioBuffer(object):
+class AudioSink(object):
 
     def __init__(self, debug=0):
         self.debug = debug
@@ -120,7 +120,7 @@ class AudioBuffer(object):
         return
 
     def __repr__(self):
-        return '<AudioBuffer: frames=%d, samples=%d, rate=%s>' % (len(self.frames), self.totalsamples, self.rate)
+        return '<AudioSink: frames=%d, samples=%d, rate=%s>' % (len(self.frames), self.totalsamples, self.rate)
 
     def load(self, fp, timeranges=None):
         n = 0

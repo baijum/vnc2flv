@@ -7,7 +7,7 @@
 
 import sys, os, re
 from vnc2flv.flv import FLVWriter, FLVParser
-from vnc2flv.audio import AudioBuffer
+from vnc2flv.audio import AudioSink
 from vnc2flv.video import str2clip, str2size, MultipleRange, FLVVideoSink, FLVMovieProcessor
 
 
@@ -35,12 +35,12 @@ def flvcat(outfile, srcfiles,
             ranges = MultipleRange(m.group(2))
         fin = file(fname, 'rb')
         parser = FLVParser(fin)
-        audiobuf = AudioBuffer()
+        audiosink = AudioSink()
         videosink = FLVVideoSink(writer, framerate=framerate, keyframe=keyframe,
                                  blocksize=blocksize, clipping=clipping,
                                  panwindow=panwindow, panspeed=panspeed,
                                  debug=debug)
-        processor.process_flv(parser, audiobuf, videosink, ranges=ranges)
+        processor.process_flv(parser, audiosink, videosink, ranges=ranges)
         parser.close()
         fin.close()
     writer.close()

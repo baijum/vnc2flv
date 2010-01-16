@@ -277,7 +277,7 @@ class FLVMovieProcessor(object):
         self.basetime = 0
         return
 
-    def process_audio_tag(self, audiobuf, data):
+    def process_audio_tag(self, audiosink, data):
         flags = ord(data[0])
         # must be mp3 packet
         if (flags & 0xf0) != 0x20: return
@@ -287,7 +287,7 @@ class FLVMovieProcessor(object):
         if flags & 2:
             samplesize = 16
         samplestereo = flags & 1
-        audiobuf.load(data[1:])
+        audiosink.load(data[1:])
         return
 
     def process_video_tag(self, videosink, data):
@@ -323,7 +323,7 @@ class FLVMovieProcessor(object):
                 videosink.update_screen_rgbabits((x0, y0), (w, h), data)
         return
 
-    def process_flv(self, parser, audiobuf=None, videosink=None, ranges=None):
+    def process_flv(self, parser, audiosink=None, videosink=None, ranges=None):
         timestamp = 0
         for (i, (tag, _, timestamp, _)) in enumerate(parser):
             data = parser.get_data(i)
@@ -331,8 +331,8 @@ class FLVMovieProcessor(object):
                 if videosink:
                     self.process_video_tag(videosink, data)
             elif tag == 8:
-                if audiobuf:
-                    self.process_audio_tag(audiobuf, data)
+                if audiosink:
+                    self.process_audio_tag(audiosink, data)
             else:
                 #self.writer.write_other_data(tag, data)
                 continue
@@ -343,12 +343,12 @@ class FLVMovieProcessor(object):
                 videosink.flush(timestamp)
         if ranges:
             timestamp = ranges.get_total(timestamp)
-        if audiobuf:
+        if audiosink:
             if ranges:
                 for (t,s,e) in ranges:
-                    audiobuf.put(self.writer, s, e, t)
+                    audiosink.put(self.writer, s, e, t)
             else:
-                audiobuf.put(self.writer)
+                audiosink.put(self.writer)
         if videosink:
             videosink.flush(timestamp)
         self.writer.flush()

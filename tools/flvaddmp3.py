@@ -7,7 +7,7 @@
 
 import sys, os, re
 from vnc2flv.flv import FLVParser, FLVWriter
-from vnc2flv.audio import AudioBuffer
+from vnc2flv.audio import AudioSink
 from vnc2flv.video import MultipleRange
 
 
@@ -43,7 +43,7 @@ def mp3add(srcfile, mp3files, outfile, force=False, debug=0):
         if m:
             fname = m.group(1)
             ranges = MultipleRange(m.group(2))
-        audio = AudioBuffer()
+        audio = AudioSink()
         fp = file(fname, 'rb')
         audio.load(fp)
         fp.close()
