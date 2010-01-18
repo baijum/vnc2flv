@@ -405,11 +405,14 @@ class FLVWriter(DataWriter):
     TAG_VIDEO = 9
     TAG_DATA = 18
 
-    def __init__(self, fp, flv_version=1, has_video=True, has_audio=False, framerate=12, debug=0):
+    def __init__(self, fp, flv_version=1,
+                 has_video=True, has_audio=False, has_other=False,
+                 framerate=12, debug=0):
         DataWriter.__init__(self, fp, debug=debug)
         self.flv_version = flv_version
         self.has_video = has_video
         self.has_audio = has_audio
+        self.has_other = has_other
         self.frames = {}
         self.basetime = 0
         self.duration = 0
@@ -488,16 +491,8 @@ class FLVWriter(DataWriter):
         self.writeub32(len(data)+11)  #size of this tag
         return
 
-    def write_other_data(self, tag, data):
-        if self.debug:
-            print >>sys.stderr, 'write_other_data: tag=%d, data=%d' % (tag, len(data))
-        self.start_tag()
-        self.write(data)
-        self.end_tag(tag)
-        return
-
     def write_video_frame(self, timestamp, data):
-        assert self.has_video
+        if not self.has_video: return
         if self.debug:
             print >>sys.stderr, 'write_video_frame: timestamp=%d, data=%d' % (timestamp, len(data))
         self.frames[0].append((timestamp, self.TAG_VIDEO, data))
@@ -505,11 +500,20 @@ class FLVWriter(DataWriter):
         return
 
     def write_audio_frame(self, timestamp, data):
-        assert self.has_audio
+        if not self.has_audio: return
         if self.debug:
             print >>sys.stderr, 'write_audio_frame: timestamp=%d, data=%d' % (timestamp, len(data))
         self.frames[1].append((timestamp, self.TAG_AUDIO, data))
         self._update()
+        return
+
+    def write_other_data(self, tag, data):
+        if not self.has_other: return
+        if self.debug:
+            print >>sys.stderr, 'write_other_data: tag=%d, data=%d' % (tag, len(data))
+        self.start_tag()
+        self.write(data)
+        self.end_tag(tag)
         return
 
     def _update(self):
