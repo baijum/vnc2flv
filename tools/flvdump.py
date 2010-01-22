@@ -5,7 +5,7 @@
 ##  Copyright (c) 2009-2010 by Yusuke Shinyama
 ##
 
-import sys, os
+import sys
 from vnc2flv.flv import FLVParser, getvalue
 try:
     from cStringIO import StringIO
@@ -25,7 +25,7 @@ def flvdump(fp, verbose=0, debug=0):
     parser = FLVParser(fp, debug=debug)
     timestamp = 0
     other = video = audio = 0
-    for (i, (tag, length, timestamp, offset)) in enumerate(parser):
+    for (i, (tag, length, timestamp, offset, _)) in enumerate(parser):
         data = parser.get_data(i)
         if tag == 8:
             # Audio tag

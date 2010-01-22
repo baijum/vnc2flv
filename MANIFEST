@@ -8,6 +8,7 @@ tools/flvrec.py
 tools/flvcat.py
 tools/flvdump.py
 tools/flvaddmp3.py
+tools/flvsplit.py
 tools/recordwin.sh
 vnc2flv/__init__.py
 vnc2flv/audio.py

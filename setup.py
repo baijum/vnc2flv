@@ -20,6 +20,7 @@ setup(
     'tools/flvcat.py',
     'tools/flvdump.py',
     'tools/flvaddmp3.py',
+    'tools/flvsplit.py',
     'tools/recordwin.sh'
     ],
   keywords=['vnc', 'flv', 'video', 'screen recorder'],

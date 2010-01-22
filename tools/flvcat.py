@@ -5,7 +5,7 @@
 ##  Copyright (c) 2009 by Yusuke Shinyama
 ##
 
-import sys, os, re
+import sys, os.path, re
 from vnc2flv.flv import FLVWriter, FLVParser
 from vnc2flv.audio import AudioSink
 from vnc2flv.video import str2clip, str2size, MultipleRange, FLVVideoSink, FLVMovieProcessor
@@ -18,12 +18,8 @@ def flvcat(outfile, srcfiles,
            blocksize=32, clipping=None,
            panwindow=None, panspeed=0,
            force=False, debug=0):
-    if not force:
-        try:
-            os.stat(outfile)
-            raise IOError('file already exists: %r' % outfile)
-        except OSError:
-            pass
+    if not force and os.path.exists(outfile):
+        raise IOError('file already exists: %r' % outfile)
     fout = file(outfile, 'wb')
     writer = FLVWriter(fout, has_video=True, has_audio=True, framerate=framerate, debug=debug)
     processor = FLVMovieProcessor(writer=writer, debug=debug)
@@ -69,7 +65,6 @@ def main(argv):
     clipping = None
     panwindow = None
     panspeed = 15
-    (host, port) = ('localhost', 5900)
     for (k, v) in opts:
         if k == '-d': debug += 1
         elif k == '-f': force = True

@@ -35,8 +35,8 @@ class MultipleRange(object):
 
     def __init__(self, s):
         self.ranges = []
-        t = 0
-        if s:
+        if isinstance(s, basestring):
+            t = 0
             for x in s.split(','):
                 m = re.match(r'(\d+)?-(\d+)?', x)
                 if not m:
@@ -49,6 +49,11 @@ class MultipleRange(object):
                     i2 = int(m.group(2))
                 else:
                     i2 = sys.maxint
+                self.ranges.append((t,i1,i2))
+                t += (i2-i1)
+        elif isinstance(s, list):
+            t = 0
+            for (i1,i2) in s:
                 self.ranges.append((t,i1,i2))
                 t += (i2-i1)
         self.ranges.sort()
@@ -325,7 +330,7 @@ class FLVMovieProcessor(object):
 
     def process_flv(self, parser, audiosink=None, videosink=None, ranges=None):
         timestamp = 0
-        for (i, (tag, _, timestamp, _)) in enumerate(parser):
+        for (i, (tag, _, timestamp, _, keyframe)) in enumerate(parser):
             data = parser.get_data(i)
             if tag == 9:
                 if videosink:
@@ -334,7 +339,7 @@ class FLVMovieProcessor(object):
                 if audiosink:
                     self.process_audio_tag(audiosink, data)
             else:
-                #self.writer.write_other_data(tag, data)
+                self.writer.write_other_data(tag, data)
                 continue
             if ranges:
                 timestamp = ranges.seekandmap(timestamp)

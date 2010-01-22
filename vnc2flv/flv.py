@@ -316,6 +316,9 @@ class DataWriter(object):
 ##
 class FLVParser(DataParser):
 
+    TAG_AUDIO = 8
+    TAG_VIDEO = 9
+
     def __init__(self, fp, debug=0):
         DataParser.__init__(self, fp, debug=debug)
         self.tags = []
@@ -351,7 +354,10 @@ class FLVParser(DataParser):
                 timestamp = self.readub24()     # timestamp in msec.
                 reserved = self.readub32()
                 offset = self.fp.tell()
-                self.tags.append((tag, length, timestamp, offset))
+                keyframe = False
+                if tag == self.TAG_VIDEO and length:
+                    keyframe = (self.readui8() & 0x10)
+                self.tags.append((tag, length, timestamp, offset, keyframe))
                 self.fp.seek(offset + length + 4)  # skip PreviousTagSize
         except EOFError:
             pass
@@ -360,8 +366,8 @@ class FLVParser(DataParser):
         return
 
     def dump(self):
-        for (tag, length, timestamp, offset) in self.tags:
-            print 'tag=%d, length=%d, timestamp=%.03f' % (tag, length, timestamp*.001)
+        for (tag, length, timestamp, offset, keyframe) in self.tags:
+            print 'tag=%d, length=%d, timestamp=%.03f, keyframe=%r' % (tag, length, timestamp*.001, keyframe)
         return
 
     def __len__(self):
@@ -373,8 +379,12 @@ class FLVParser(DataParser):
     def __getitem__(self, i):
         return self.tags[i]
 
+    def get_duration(self):
+        (_,_,duration,_,_) = self.tags[-1]
+        return duration
+
     def get_data(self, i):
-        (tag, length, timestamp, offset) = self.tags[i]
+        (_, length, _, offset, _) = self.tags[i]
         self.fp.seek(offset)
         data = self.read(length)
         return data
@@ -384,7 +394,7 @@ class FLVParser(DataParser):
         i1 = len(self.tags)
         while i0 < i1:
             i = (i0+i1)/2
-            (tag, length, timestamp, offset) = self.tags[i]
+            (tag, length, timestamp, offset, keyframe) = self.tags[i]
             if timestamp == t:
                 i0 = i
                 break

@@ -5,7 +5,7 @@
 ##  Copyright (c) 2009-2010 by Yusuke Shinyama
 ##
 
-import sys, os, re
+import sys, os.path, re
 from vnc2flv.flv import FLVParser, FLVWriter
 from vnc2flv.audio import AudioSink
 from vnc2flv.video import MultipleRange
@@ -14,17 +14,13 @@ from vnc2flv.video import MultipleRange
 ##  mp3add
 ##
 def mp3add(srcfile, mp3files, outfile, force=False, debug=0):
-    if not force:
-        try:
-            os.stat(outfile)
-            raise IOError('file already exists: %r' % outfile)
-        except OSError:
-            pass
+    if not force and os.path.exists(outfile):
+        raise IOError('file already exists: %r' % outfile)
     fout = file(outfile, 'wb')
     writer = FLVWriter(fout, debug=debug, has_video=True, has_audio=True)
     fin = file(srcfile, 'rb')
     parser = FLVParser(fin, debug=debug)
-    for (i, (tag, _, timestamp, _)) in enumerate(parser):
+    for (i, (tag, _, timestamp, _, _)) in enumerate(parser):
         if tag == 8:
             pass
         elif tag == 9:
