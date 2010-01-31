@@ -19,7 +19,7 @@ Desktop Screen Recorder for UNIX, Linux, Windows or Mac.
 
 <div align=right class=lastmod>
 <!-- hhmts start -->
-Last Modified: Tue Jan  5 22:34:05 JST 2010
+Last Modified: Sun Jan 31 15:33:32 JST 2010
 <!-- hhmts end -->
 </div>
 
@@ -109,6 +109,7 @@ vnc2flv comes with several programs:
 <li> <a href="#flvrec.py">flvrec.py</a> (main recording tool)
 <li> <a href="#flvcat.py">flvcat.py</a> (for editing)
 <li> <a href="#flvaddmp3.py">flvaddmp3.py</a> (for adding mp3 audio)
+<li> <a href="#flvsplit.py">flvsplit.py</a> (for splitting a movie into shorter clips)
 <li> <a href="#flvdump.py">flvdump.py</a> (for debugging use)
 <li> <a href="#recordwin.sh">recordwin.sh</a> (all-in-one script)
 </ul>
@@ -291,6 +292,41 @@ Add mp3 audio files to a movie.
 
 </dl>
 
+<a name="flvsplit.py"></a>
+<h3>flvsplit.py</h3>
+<p>
+Split a movie file into shorter clips.
+This can be used to chop movies into several chunks in order to
+fit each of them within the length limitation in several movie sites (e.g. YouTube).
+
+<h4>Syntax:</h4>
+<blockquote>
+<code>flvsplit.py [<em>options</em>] <em><u>src</u></em> <em><u>dstbase</u></em></code>
+</blockquote>
+
+<h4>Options:</h4>
+<dl>
+<dt> <code>-f</code>
+<dd> Forces overwriting the output file.
+
+<dt> <code>-r <em><u>fps</u></em></code> 
+<dd> Specifies the number of frames per second. (default: 15)
+
+<dt> <code>-K <u><em>keyframe</em></u></code> 
+<dd> Specifies the rate of key frames that is inserted in every this number of frames.
+(default: every 150 frames)
+
+<dt> <code>-B <em><u>blocksize</u></em></code> 
+<dd> Specifies the block size. (default: 32)
+
+<dt> <code>-D <em><u>duration</u></em></code> 
+<dd> Specifies the maximum movie length in seconds. (default: 600)
+
+<dt> <code>-P <em><u>overlap</u></em></code> 
+<dd> Specifies the length of overlapping parts in consecutive clips in seconds. (default: 5)
+
+</dl>
+
 <a name="flvdump.py"></a>
 <h3>flvdump.py (for debugging)</h3>
 <p>
@@ -397,6 +433,7 @@ Currently the following free/opensource embeddable movie players are known to wo
 <hr noshade>
 <h2>Changes</h2>
 <ul>
+<li> 2010/01/22: flvsplit.py added.
 <li> 2009/11/14: SIGINT bug fixed.
 <li> 2009/10/25: FLV metadata support.
 <li> 2009/08/30: recordwin.sh script is added.

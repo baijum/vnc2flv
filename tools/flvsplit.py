@@ -15,7 +15,7 @@ from vnc2flv.video import MultipleRange, FLVVideoSink, FLVMovieProcessor
 ##
 def flvsplit(outbase, srcfile, 
              framerate=12, keyframe=120, blocksize=32,
-             duration=sys.maxint, overlap=0, format='%s-%03d.flv',
+             duration=sys.maxint, overlap=0, nameformat='%s-%03d.flv',
              force=False, debug=0):
     fin = file(srcfile, 'rb')
     parser = FLVParser(fin)
@@ -25,7 +25,7 @@ def flvsplit(outbase, srcfile,
     t0 = 0
     i = 0
     while 1:
-        outfile = format % (outbase, i)
+        outfile = nameformat % (outbase, i)
         if not force and os.path.exists(outfile):
             raise IOError('file already exists: %r' % outfile)
         fout = file(outfile, 'wb')
@@ -55,7 +55,7 @@ def main(argv):
     def usage():
         print argv[0], vnc2flv.__version__
         print ('usage: %s [-d] [-f] [-r framerate] [-K keyframe]'
-               ' [-B blocksize] [-D duration] [-P overlap] [-F format]'
+               ' [-B blocksize] [-D duration] [-P overlap] [-F nameformat]'
                ' src.flv destbase' % argv[0])
         return 100
     try:
@@ -67,7 +67,7 @@ def main(argv):
     framerate = 12
     keyframe = 120
     blocksize = 32
-    format = '%s-%03d.flv'
+    nameformat = '%s-%03d.flv'
     duration = 600*1000
     overlap = 5*1000
     for (k, v) in opts:
@@ -78,14 +78,14 @@ def main(argv):
         elif k == '-B': blocksize = int(v)
         elif k == '-D': duration = int(v)*1000
         elif k == '-P': overlap = int(v)*1000
-        elif k == '-F': format = v
+        elif k == '-F': nameformat = v
     if len(args) < 2: return usage()
     srcfile = args.pop(0)
     outbase = args.pop(0)
     try:
         flvsplit(outbase, srcfile,
                  framerate=framerate, keyframe=keyframe, blocksize=blocksize,
-                 duration=duration, overlap=overlap, format=format,
+                 duration=duration, overlap=overlap, nameformat=nameformat,
                  force=force, debug=debug)
     except IOError, e:
         print >>sys.stderr, e
