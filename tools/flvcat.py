@@ -77,11 +77,14 @@ def main(argv):
     if len(args) < 2: return usage()
     outfile = args.pop(-1)
     srcfiles = args
-    flvcat(outfile, srcfiles,
-           framerate=framerate, keyframe=keyframe,
-           blocksize=blocksize, clipping=clipping,
-           panwindow=panwindow, panspeed=panspeed,
-           force=force, debug=debug)
+    try:
+        flvcat(outfile, srcfiles,
+               framerate=framerate, keyframe=keyframe,
+               blocksize=blocksize, clipping=clipping,
+               panwindow=panwindow, panspeed=panspeed,
+               force=force, debug=debug)
+    except IOError, e:
+        print >>sys.stderr, e
     return
 
 if __name__ == "__main__": sys.exit(main(sys.argv))

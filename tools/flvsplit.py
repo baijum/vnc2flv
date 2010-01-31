@@ -82,10 +82,13 @@ def main(argv):
     if len(args) < 2: return usage()
     srcfile = args.pop(0)
     outbase = args.pop(0)
-    flvsplit(outbase, srcfile,
-             framerate=framerate, keyframe=keyframe, blocksize=blocksize,
-             duration=duration, overlap=overlap, format=format,
-             force=force, debug=debug)
+    try:
+        flvsplit(outbase, srcfile,
+                 framerate=framerate, keyframe=keyframe, blocksize=blocksize,
+                 duration=duration, overlap=overlap, format=format,
+                 force=force, debug=debug)
+    except IOError, e:
+        print >>sys.stderr, e
     return
 
 if __name__ == "__main__": sys.exit(main(sys.argv))

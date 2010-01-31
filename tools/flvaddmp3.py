@@ -72,7 +72,10 @@ def main(argv):
     if len(args) < 3: return usage()
     srcfile = args.pop(0)
     outfile = args.pop(-1)
-    mp3add(srcfile, args, outfile, force=force, debug=debug)
+    try:
+        mp3add(srcfile, args, outfile, force=force, debug=debug)
+    except IOError, e:
+        print >>sys.stderr, e
     return
 
 if __name__ == "__main__": sys.exit(main(sys.argv))
