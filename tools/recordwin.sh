@@ -21,7 +21,7 @@ AWK=${AWK:-awk}
 id=`date '+%Y%m%d%H%M%S'`.$$
 
 usage() {
-    echo "usage: $0 [-host hostname] [-all] [-display display] [-name windowname] [-id windowid] [-type filetype] [outfile]"
+    echo "usage: $0 [-host hostname] [-all] [-display display] [-name windowname] [-geometry geometry] [-id windowid] [-type filetype] [outfile]"
     exit 100
 }
 
@@ -31,13 +31,17 @@ outfile=
 flvrecopts=
 xwopts=
 desktop=
+verbose=
+geometry=
 display="$DISPLAY"
 while [ $# -gt 0 ]; do
     case "$1" in
 	-all|-a) desktop=1;;
+        -verbose|-v) verbose=1;;
 	-name) shift; xwopts="$xwopts -name $1";;
 	-id) shift; xwopts="$xwopts -id $1";;
-	-display|-d) shift; display="$1"; xwopts="$xwopts -display $1";;
+	-display|-disp|-d) shift; display="$1"; xwopts="$xwopts -display $1";;
+        -geometry|-geom|-g) shift; geometry="$1";;
 	-host) shift; host="$1";;
 	-*) usage;;
         *) outfile="$1";;
@@ -47,6 +51,8 @@ done
 
 if [ "X$host" != "X" ]; then
   flvrecopts="$host"
+elif [ "X$geometry" != "X" ]; then
+  flvrecopts="-C $geometry"
 elif [ "X$desktop" = "X" ]; then
   echo "Please select the window..."
   info=`$XWININFO $xwopts 2>/dev/null`
@@ -70,6 +76,11 @@ tmpbase=$TMPDIR/vnc2flv.$id
 flvfile=${tmpbase}.flv
 wavfile=${tmpbase}.wav
 mp3file=${tmpbase}.mp3
+
+if [ "X$verbose" != "X" ]; then
+  echo "output: $outfile"
+  echo "opts: $flvrecopts"
+fi
 
 # Start recording.
 trap ":" INT
