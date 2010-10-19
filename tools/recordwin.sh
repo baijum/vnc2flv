@@ -10,7 +10,7 @@
 ##  Requires: x11vnc, xwininfo, arecord, lame, awk, date
 ##
 
-TMPDIR=/tmp
+TMPDIR=${TMPDIR:-/tmp}
 FLVREC=${FLVREC:-flvrec.py}
 FLVADDMP3=${FLVADDMP3:-flvaddmp3.py}
 X11VNC=${X11VNC:-x11vnc}
