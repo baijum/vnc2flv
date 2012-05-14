@@ -1,35 +1,33 @@
-
+-------
 vnc2flv
-=======
+-------
+
+:Date: |today|
 
 Desktop Screen Recorder for UNIX, Linux, Windows or Mac.
 
 `Homepage`_   `Recent Changes`_
 
-Last Modified: Sun Feb 7 19:27:39 JST 2010
-
--   `What's It?`_
--   `Download`_
--   `How to Install`_
--   `How to Use`_
--   `Adding Audio`_
--   `Embedding Movie`_
--   `Changes`_
--   `Related Links`_
--   `Terms and Conditions`_
+- `What's It?`_
+- `Download`_
+- `How to Install`_
+- `How to Use`_
+- `Adding Audio`_
+- `Embedding Movie`_
+- `Changes`_
+- `Related Links`_
+- `Terms and Conditions`_
 
 **Download:**
-` http://pypi.python.org/pypi/vnc2flv/ `_
+http://pypi.python.org/pypi/vnc2flv
 
 
 **Discussion:** (for questions and comments, post here)
-` http://groups.google.com/group/vnc2flv-users/ `_
+https://groups.google.com/forum/#!forum/vnc2flv-users
 
 
 **View the source:**
-` http://code.google.com/p/vnc2flv/source/browse/trunk/vnc2flv `_
-
---------
+https://github.com/baijum/vnc2flv
 
 
 What's It?
@@ -45,9 +43,9 @@ and more lightweight functionality.)
 
 **Demo:** (created with vnc2flv itself)
 
+.. raw:: html
 
-
---------
+  <object width="425" height="344"><param name="movie" value="http://www.youtube.com/v/DcijI6EagYI&hl=en&fs=1&"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/DcijI6EagYI&hl=en&fs=1&" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="425" height="344"></embed></object>
 
 
 How to Install
@@ -60,14 +58,9 @@ How to Install
 3.  Download and extract the `vnc2flv source distribution`_.
 4.  Run ``setup.py`` to install:
 
+::
 
-    > ::
->         # **python setup.py install**
->
-
-5.  Done!
-
---------
+  python setup.py install
 
 
 Installing for Windows
@@ -79,11 +72,9 @@ Here is an additional instruction for Windows:
 2.  Install `MinGW`_ 5.1.4 or newer.
 3.  Do the following instead:
 
-    > ::
->         > **python setup.py build -c mingw32 install**
->
+::
 
---------
+  python setup.py build -c mingw32 install
 
 
 How to Use
@@ -91,14 +82,12 @@ How to Use
 
 vnc2flv comes with several programs:
 
--   `flvrec.py`_ (main recording tool)
--   `flvcat.py`_ (for editing)
--   `flvaddmp3.py`_ (for adding mp3 audio)
--   `flvsplit.py`_ (for splitting a movie into shorter clips)
--   `flvdump.py`_ (for debugging use)
--   `recordwin.sh`_ (all-in-one script)
-
---------
+- `flvrec.py`_ (main recording tool)
+- `flvcat.py`_ (for editing)
+- `flvaddmp3.py`_ (for adding mp3 audio)
+- `flvsplit.py`_ (for splitting a movie into shorter clips)
+- `flvdump.py`_ (for debugging use)
+- `recordwin.sh`_ (all-in-one script)
 
 
 flvrec.py
@@ -111,8 +100,7 @@ machine in advance.
 
 The generated file is playable via either desktop programs like ffmpeg, VLC
 or mplayer, or other online Flash-based players.
-Syntax:
-:::::::
+Syntax::
 
 > ``flvrec.py [*options*] [**host**[*:*display**]]``
 >
@@ -121,8 +109,7 @@ Syntax:
 > ``flvrec.py [*options*] [**host** [**port**]]``
 
 
-Examples:
-:::::::::
+Examples::
 
 > ::
 >     $ **x11vnc -quiet -localhost -viewonly -nopw -bg**
@@ -173,8 +160,6 @@ raw)  ``-B **blocksize**`` Specifies the block size. (default: 32)  ``-C
 is started. This process runs parallely with flvrec.py and can be used for
 recording audio. When the recording is stopped, a SIGINT is sent to the
 subprocess.  ``-d`` Increases the debug level.
-
---------
 
 
 flvcat.py
@@ -236,8 +221,6 @@ reducing the movie screen size. (default: no auto panning)  ``-S **speed**``
 Specifies the speed of auto panning. (default: 60 frames)  ``-f`` Forces
 overwriting the output file.
 
---------
-
 
 flvaddmp3.py
 ~~~~~~~~~~~~
@@ -254,8 +237,6 @@ Options:
 ::::::::
 
 ``-f`` Forces overwriting the output file.
-
---------
 
 
 flvsplit.py
@@ -281,8 +262,6 @@ every 150 frames)  ``-B **blocksize**`` Specifies the block size. (default:
 (default: 600)  ``-P **overlap**`` Specifies the length of overlapping parts
 in consecutive clips in seconds. (default: 5)
 
---------
-
 
 flvdump.py (for debugging)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -293,8 +272,6 @@ Syntax:
 :::::::
 
 > ``flvdump.py [*options*] **flvfile**``
-
---------
 
 
 recordwin.sh
@@ -320,8 +297,6 @@ Options:
 Specifies the title of the target window.  ``-id *window_id*`` Specifies the
 Window ID of the target window.  ``-display *display_name*`` Specifies the
 name of the X11 screen where a VNC server is to be started.
-
---------
 
 
 Adding Audio
@@ -371,8 +346,6 @@ encoded as MP3 format. After the recording is finished, the user can use the
 ```recordwin.sh```_ is a script for making these tasks easy. It launches a
 VNC server and automatically does the things described above.
 
---------
-
 
 Embedding Movie
 ---------------
@@ -380,31 +353,27 @@ Embedding Movie
 Currently the following free/opensource embeddable movie players are known to
 work with vnc2flv:
 
--   `JW FLV Player`_
--   `OS FLV`_
--   `FLV Player`_
-
---------
+- `JW FLV Player`_
+- `OS FLV`_
+- `FLV Player`_
 
 
 Changes
 -------
 
--   2010/01/22: flvsplit.py added.
--   2009/11/14: SIGINT bug fixed.
--   2009/10/25: FLV metadata support.
--   2009/08/30: recordwin.sh script is added.
--   2009/08/24: Improved documentation.
--   2009/08/17: Synchronized audio recording support is added.
--   2009/08/02: various bugfixes. Command name changed: mp3add.py ->
-    flvaddmp3.py.
--   2009/07/22: flvcat.py added.
--   2009/07/04: rfb protocol handling modified. (hopefully better auto-
-    scrolling)
--   2009/07/02: mp3add.py and flvdump.py added.
--   2009/06/28: Initial release.
-
---------
+- 2010/01/22: flvsplit.py added.
+- 2009/11/14: SIGINT bug fixed.
+- 2009/10/25: FLV metadata support.
+- 2009/08/30: recordwin.sh script is added.
+- 2009/08/24: Improved documentation.
+- 2009/08/17: Synchronized audio recording support is added.
+- 2009/08/02: various bugfixes. Command name changed: mp3add.py ->
+  flvaddmp3.py.
+- 2009/07/22: flvcat.py added.
+- 2009/07/04: rfb protocol handling modified. (hopefully better auto-
+  scrolling)
+- 2009/07/02: mp3add.py and flvdump.py added.
+- 2009/06/28: Initial release.
 
 
 Related Links
@@ -414,8 +383,6 @@ Related Links
 -   FLV players (desktop): `FFMpeg`_, `MPlayer`_, `VLC media player`_
 -   FLV players (flash): `JW FLV Player`_, `OS FLV`_, `FLV Player`_
 -   Flash players: `Adobe Flash Player`_, `GNU Gnash`_
-
---------
 
 
 Terms and Conditions
@@ -440,10 +407,6 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
---------
-
-Yusuke Shinyama
 
 .. _Homepage: http://www.unixuser.org/~euske/python/vnc2flv/index.html
 .. _Recent Changes: #changes
