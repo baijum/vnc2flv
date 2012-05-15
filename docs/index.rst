@@ -236,28 +236,35 @@ Examples::
 
 Options:
 
-``-r **fps**``
+.. cmdoption:: -r fps
+
     Specifies the number of frames per second. (default: 15)
 
-``-K **keyframe**``
+.. cmdoption:: -K keyframe
+
     Specifies the rate of key frames that is inserted in every
     this number of frames. (default: every 150 frames)
 
-``-B **blocksize**``
+.. cmdoption:: -B blocksize
+
     Specifies the block size. (default: 32)
 
-``-C **w*x*h*{+|-}*x*{+|-}*y**``
+.. cmdoption:: -C WxH{+|-}X{+|-}Y
+
     Specifies the clipping. (default: entire frame)
 
-``-W **w*x*h**``
+.. cmdoption:: -W WxH
+
     Specifies the window size for auto panning. Auto panning tracks the
     changes in the screen and tries to focus on the active part of the screen.
     This helps reducing the movie screen size. (default: no auto panning)
 
-``-S **speed**``
+.. cmdoption:: -S speed
+
     Specifies the speed of auto panning. (default: 60 frames)
 
-``-f``
+.. cmdoption:: -f
+
     Forces overwriting the output file.
 
 
@@ -273,8 +280,8 @@ Syntax::
 
 Options:
 
+.. cmdoption:: -f
 
-``-f``
     Forces overwriting the output file.
 
 
@@ -292,23 +299,29 @@ Syntax::
 
 Options::
 
-``-f``
+.. cmdoption:: -f
+
     Forces overwriting the output file.
 
-``-r **fps**``
+.. cmdoption:: -r fps
+
     Specifies the number of frames per second. (default: 15)
 
-``-K **keyframe**``
+.. cmdoption:: -K keyframe
+
     Specifies the rate of key frames that is inserted in every this number of frames.
     (default: every 150 frames)
 
-``-B **blocksize**``
+.. cmdoption:: -B blocksize
+
     Specifies the block size. (default: 32)
 
-``-D **duration**``
+.. cmdoption:: -D duration
+
     Specifies the maximum movie length in seconds. (default: 600)
 
-``-P **overlap**``
+.. cmdoption:: -P overlap
+
     Specifies the length of overlapping parts
     in consecutive clips in seconds. (default: 5)
 
@@ -343,16 +356,20 @@ Syntax:
 
 Options:
 
-``-all``
+.. cmdoption:: -all
+
     Instructs to record an entire desktop.
 
-``-name *window_name*``
+.. cmdoption:: -name window_name
+
     Specifies the title of the target window.
 
-``-id *window_id*``
+.. cmdoption:: -id window_id
+
     Specifies the Window ID of the target window.
 
-``-display *display_name*``
+.. cmdoption:: -display display_name
+
     Specifies the name of the X11 screen where a VNC server is to be started.
 
 Adding Audio
