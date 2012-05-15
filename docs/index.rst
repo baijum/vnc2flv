@@ -6,17 +6,8 @@ vnc2flv
 
 Desktop Screen Recorder for UNIX, Linux, Windows or Mac.
 
-`Homepage`_   `Recent Changes`_
-
-- `What's It?`_
-- `Download`_
-- `How to Install`_
-- `How to Use`_
-- `Adding Audio`_
-- `Embedding Movie`_
-- `Changes`_
-- `Related Links`_
-- `Terms and Conditions`_
+**Homepage**
+http://www.unixuser.org/~euske/python/vnc2flv/index.html
 
 **Download:**
 http://pypi.python.org/pypi/vnc2flv
@@ -52,8 +43,8 @@ How to Install
 --------------
 
 1.  First of all, you have to have the `x11vnc`_ server running on your
-    screen. This program captures the screen sends it to other processes. See
-    also a list of `other VNC servers`_.
+    screen.  This program captures the screen sends it to other processes.
+    You can also VNC servers like: `RealVNC`_, `TightVNC`_, `UltraVNC`_
 2.  Install `Python`_ 2.4 or newer.
 3.  Download and extract the `vnc2flv source distribution
     <http://pypi.python.org/pypi/vnc2flv>`_.
@@ -411,7 +402,7 @@ encoded as MP3 format. After the recording is finished, the user can use the
 
 Just do this::
 
-  $ recordwin.sh*
+  $ recordwin.sh
 
 
 `recordwin.sh`_ is a script for making these tasks easy. It launches a
@@ -479,33 +470,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-.. _Homepage: http://www.unixuser.org/~euske/python/vnc2flv/index.html
-.. _Recent Changes: #changes
-.. _What's It?: #intro
-.. _Download: #source
-.. _How to Install: #install
-.. _How to Use: #usage
-.. _Adding Audio: #addaudio
-.. _Embedding Movie: #embed
-.. _Related Links: #related
-.. _Terms and Conditions: #license
-.. _ http://pypi.python.org/pypi/vnc2flv/ :
-    http://pypi.python.org/pypi/vnc2flv/
-.. _ http://groups.google.com/group/vnc2flv-users/ :
-    http://groups.google.com/group/vnc2flv-users/
-.. _ http://code.google.com/p/vnc2flv/source/browse/trunk/vnc2flv :
-    http://code.google.com/p/vnc2flv/source/browse/trunk/vnc2flv
 .. _x11vnc: http://www.karlrunge.com/x11vnc/
-.. _other VNC servers: #server
 .. _Python: http://www.python.org/download/
 .. _TightVNC: http://www.tightvnc.com/
 .. _MinGW: http://www.mingw.org/
-.. _flvrec.py: #flvrec.py
-.. _flvcat.py: #flvcat.py
-.. _flvaddmp3.py: #flvaddmp3.py
-.. _flvsplit.py: #flvsplit.py
-.. _flvdump.py: #flvdump.py
-.. _recordwin.sh: #recordwin.sh
 .. _JW FLV Player: http://www.longtailvideo.com/players/jw-flv-player/
 .. _OS FLV: http://www.osflv.com/
 .. _FLV Player: http://flv-player.net/
