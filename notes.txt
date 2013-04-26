@@ -1,0 +1,4 @@
+
+flvrec.py -S 'arecord -f cd out.wav'
+lame out.wav out.mp3
+flvaddmp3.py out201205110036.flv out.mp3 final.flv
